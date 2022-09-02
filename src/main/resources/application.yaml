@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    username: pguser
+    password: pass9
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/credit_db

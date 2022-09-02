@@ -15,4 +15,4 @@ CREATE TABLE PAYMENT_PERIOD (
     credit_id bigint NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_period_credit FOREIGN KEY (credit_id) REFERENCES credit (id)
-)
+);
