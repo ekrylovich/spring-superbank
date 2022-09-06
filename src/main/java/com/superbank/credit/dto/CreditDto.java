@@ -3,17 +3,34 @@ package com.superbank.credit.dto;
 import com.superbank.credit.service.period.PeriodType;
 import com.superbank.credit.service.period.RateType;
 
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 public class CreditDto {
-    public final String      title;
-    public final String      description;
-    public final Long        userId;
+    @NotEmpty(message = "{credit.title.empty}")
+    @Size(max = 25, message = "{connection.name.size}")
+    public final String title;
+    @NotEmpty(message = "{credit.description.empty}")
+    @Size(max = 250, message = "{credit.description.size}")
+    public final String description;
+    @NotNull(message = "{credit.userid.notnull}")
+    public final Long userId;
+    @NotNull(message = "{credit.duration.notnull}")
     public final DurationDto duration;
-    public final Double     sum;
-    public final RateType   rateType;
+    @NotNull(message = "{credit.sum.notnull}")
+    @Positive(message = "{credit.sum.positive}")
+    public final Double sum;
+    @NotNull(message = "{credit.rateType.notnull}")
+    public final RateType rateType;
+    @NotNull(message = "{credit.periodType.notnull}")
     public final PeriodType periodType;
-    public final LocalDate  startDate;
+    @NotNull(message = "{credit.startDate.notnull}")
+    @FutureOrPresent(message = "{credit.startDate.future}")
+    public final LocalDate startDate;
 
     public CreditDto(final String title,
                      final String description,
