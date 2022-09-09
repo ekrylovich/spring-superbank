@@ -1,4 +1,7 @@
 spring:
+  profiles:
+    active: prod
+
   datasource:
     username: pguser
     password: pass9
@@ -7,3 +10,29 @@ spring:
 
   liquibase:
     change-log: classpath:db/migrations.yaml
+
+server:
+  port: 8888
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    show-sql: true
+
+credit:
+  rate:
+    fixed: 0.05
+    floating: 0.02
+
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+credit:
+  rateProvider: http://localhost:8889/api/v1/rate
