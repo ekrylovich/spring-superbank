@@ -11,6 +11,15 @@ spring:
   liquibase:
     change-log: classpath:db/migrations.yaml
 
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+topics:
+  overdue:
+    name: t.credit.overdue
+
 server:
   port: 8888
 
