@@ -1,8 +1,11 @@
 package com.superbank.credit.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.superbank.credit.service.period.PeriodType;
 import com.superbank.credit.service.period.RateType;
 
+import javax.validation.Valid;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -12,13 +15,14 @@ import java.time.LocalDate;
 
 public class CreditDto {
     @NotEmpty(message = "{credit.title.empty}")
-    @Size(max = 25, message = "{connection.name.size}")
+    @Size(max = 25, message = "{credit.title.size}")
     public final String title;
     @NotEmpty(message = "{credit.description.empty}")
     @Size(max = 250, message = "{credit.description.size}")
     public final String description;
     @NotNull(message = "{credit.userid.notnull}")
     public final Long userId;
+    @Valid
     @NotNull(message = "{credit.duration.notnull}")
     public final DurationDto duration;
     @NotNull(message = "{credit.sum.notnull}")

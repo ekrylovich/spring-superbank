@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CreditServiceImpl implements CreditService{
+    public static final String CREDIT_NOT_FOUND = "Credit not found";
     private final PeriodCalculatorFactory periodCalculatorFactory;
     private final CreditRepository creditRepository;
 
@@ -46,9 +47,9 @@ public class CreditServiceImpl implements CreditService{
     @Override
     public void payNextPeriod(final Long creditId) {
         final Credit credit = creditRepository.findById(creditId)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException(CREDIT_NOT_FOUND));
         final PaymentPeriod nextPaymentPeriod = credit.getPaymentPeriods().stream()
-                .filter(this::getPaymentPeriodPredicate)
+                .filter(this::notPayed)
                 .min(Comparator.comparing(PaymentPeriod::getStartDate))
                 .orElseThrow(AlreadyPayedException::new);
         nextPaymentPeriod.setStatus(Status.PAYED);
@@ -58,13 +59,13 @@ public class CreditServiceImpl implements CreditService{
     private UserCreditDto mapCreditDto(final Credit credit) {
         final double remainingSum = credit.getPaymentPeriods()
                 .stream()
-                .filter(this::getPaymentPeriodPredicate)
+                .filter(this::notPayed)
                 .mapToDouble(PaymentPeriod::getSumma)
                 .sum();
         return UserCreditDto.createUserCreditDto(credit, remainingSum);
     }
 
-    private boolean getPaymentPeriodPredicate(final PaymentPeriod paymentPeriod) {
+    private boolean notPayed(final PaymentPeriod paymentPeriod) {
         return !paymentPeriod.getStatus().payed();
     }
 }
