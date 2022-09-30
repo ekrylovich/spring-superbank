@@ -1,16 +1,5 @@
 package com.superbank.credit.service;
 
-import static com.superbank.credit.service.CreditServiceImpl.CREDIT_NOT_FOUND;
-import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-
 import com.superbank.credit.dto.CreditDto;
 import com.superbank.credit.dto.DurationDto;
 import com.superbank.credit.dto.UserCreditDto;
@@ -23,7 +12,6 @@ import com.superbank.credit.service.period.PeriodType;
 import com.superbank.credit.service.period.RateType;
 import com.superbank.technical.exception.AlreadyPayedException;
 import com.superbank.technical.exception.EntityNotFoundException;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,6 +21,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import static com.superbank.credit.service.CreditServiceImpl.CREDIT_NOT_FOUND;
+import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CreditServiceTest {
@@ -44,7 +37,7 @@ public class CreditServiceTest {
     private PeriodCalculatorFactory periodCalculatorFactory;
 
     @Test
-    public void addCredit(){
+    public void addCredit() {
 //        Given
         final PeriodType periodType = PeriodType.MONTHLY;
         final CreditDto creditDto = creditDto(periodType);
@@ -71,7 +64,7 @@ public class CreditServiceTest {
                 .mapToDouble(PaymentPeriod::getSumma)
                 .sum();
         final Credit credit = new Credit("creditDto.title", "creditDto.description",
-                                         userId, periods);
+                userId, periods);
         when(creditRepository.findByUserId(userId)).thenReturn(singletonList(credit));
 //        When
         List<UserCreditDto> userCreditDtos = creditService.creditByUserId(userId);
@@ -86,13 +79,13 @@ public class CreditServiceTest {
     }
 
     @Test
-    public void payNextPeriod(){
+    public void payNextPeriod() {
 //        Given
         final Long creditId = 101L;
         final List<PaymentPeriod> periods = paymentPeriods();
         periods.get(0).setStatus(Status.PAYED);
         final Credit credit = new Credit("creditDto.title", "creditDto.description",
-                                         101L, periods);
+                101L, periods);
         when(creditRepository.findById(creditId)).thenReturn(Optional.of(credit));
 //        When
         creditService.payNextPeriod(creditId);
@@ -104,7 +97,7 @@ public class CreditServiceTest {
     }
 
     @Test
-    public void payNextPeriodNotFound(){
+    public void payNextPeriodNotFound() {
 //        Given
         final Long creditId = 101L;
         when(creditRepository.findById(creditId)).thenReturn(Optional.empty());
@@ -117,33 +110,33 @@ public class CreditServiceTest {
     }
 
     @Test
-    public void payNextPeriodAlreadyPayed(){
+    public void payNextPeriodAlreadyPayed() {
 //        Given
         final Long creditId = 101L;
         final List<PaymentPeriod> periods = paymentPeriods();
         periods.forEach(period -> period.setStatus(Status.PAYED));
         final Credit credit = new Credit("creditDto.title", "creditDto.description",
-                                         101L, periods);
+                101L, periods);
         when(creditRepository.findById(creditId)).thenReturn(Optional.of(credit));
 //        When/Then
 
         final AlreadyPayedException thrown = assertThrows(AlreadyPayedException.class,
-                                                            () -> creditService.payNextPeriod(creditId),
-                                                            "Expected creditService.payNextPeriod to throw AlreadyPayedException");
+                () -> creditService.payNextPeriod(creditId),
+                "Expected creditService.payNextPeriod to throw AlreadyPayedException");
 
     }
 
-    private CreditDto creditDto(final PeriodType periodType){
-        final DurationDto durationDto = new DurationDto(1,1,1);
+    private CreditDto creditDto(final PeriodType periodType) {
+        final DurationDto durationDto = new DurationDto(1, 1, 1);
         return new CreditDto("CreditTitle", "CreditDescription",
-                             101L, durationDto, 100d, RateType.FIXED,
-                             periodType, LocalDate.now());
+                101L, durationDto, 100d, RateType.FIXED,
+                periodType, LocalDate.now());
     }
 
-    private List<PaymentPeriod> paymentPeriods(){
+    private List<PaymentPeriod> paymentPeriods() {
         return List.of(new PaymentPeriod(100d, LocalDate.now(), LocalDate.now().plusMonths(1), Status.FUTURE_PAYMENT),
-                       new PaymentPeriod(100d, LocalDate.now().plusMonths(1), LocalDate.now().plusMonths(2), Status.FUTURE_PAYMENT),
-                       new PaymentPeriod(125d, LocalDate.now().plusMonths(2), LocalDate.now().plusMonths(3), Status.FUTURE_PAYMENT),
-                       new PaymentPeriod(150d, LocalDate.now().plusMonths(3), LocalDate.now().plusMonths(4), Status.FUTURE_PAYMENT));
+                new PaymentPeriod(100d, LocalDate.now().plusMonths(1), LocalDate.now().plusMonths(2), Status.FUTURE_PAYMENT),
+                new PaymentPeriod(125d, LocalDate.now().plusMonths(2), LocalDate.now().plusMonths(3), Status.FUTURE_PAYMENT),
+                new PaymentPeriod(150d, LocalDate.now().plusMonths(3), LocalDate.now().plusMonths(4), Status.FUTURE_PAYMENT));
     }
 }

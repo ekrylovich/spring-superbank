@@ -4,7 +4,7 @@ public class CreditRates {
     public final Double rateFixed;
     public final Double rateFloating;
 
-    public CreditRates(Double rateFixed, Double rateFloating) {
+    public CreditRates(final Double rateFixed, final Double rateFloating) {
         this.rateFixed = rateFixed;
         this.rateFloating = rateFloating;
     }

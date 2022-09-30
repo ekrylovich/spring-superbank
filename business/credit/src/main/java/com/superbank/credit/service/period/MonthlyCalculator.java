@@ -4,7 +4,6 @@ import com.superbank.credit.dto.CreditDto;
 import com.superbank.credit.model.PaymentPeriod;
 import com.superbank.credit.model.Status;
 import com.superbank.rates.model.CreditRates;
-
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,15 +19,15 @@ public class MonthlyCalculator implements PeriodCalculator {
 
     private final CreditRates creditRates;
 
-    public MonthlyCalculator(CreditRates creditRates) {
+    public MonthlyCalculator(final CreditRates creditRates) {
         this.creditRates = creditRates;
     }
 
     @Override
-    public List<PaymentPeriod> calculate(CreditDto creditDto) {
+    public List<PaymentPeriod> calculate(final CreditDto creditDto) {
         final LocalDate endDate = creditDto.startDate.plus(Period.of(creditDto.duration.years,
-                                                                     creditDto.duration.months,
-                                                                     creditDto.duration.days));
+                creditDto.duration.months,
+                creditDto.duration.days));
         final long months = ChronoUnit.MONTHS.between(creditDto.startDate, endDate);
         final List<Double> sumPerMonth = creditDto.rateType.calculateAmount(months, creditDto.sum, creditRates);
         return LongStream.range(0, months)
@@ -39,6 +38,6 @@ public class MonthlyCalculator implements PeriodCalculator {
 
     private LongFunction<PaymentPeriod> createPaymentPeriods(final CreditDto creditDto, final List<Double> sumsPerMonth) {
         return months -> new PaymentPeriod(sumsPerMonth.get(Math.toIntExact(months)), creditDto.startDate.plusMonths(months),
-                                           creditDto.startDate.plusMonths(months + 1), Status.FUTURE_PAYMENT);
+                creditDto.startDate.plusMonths(months + 1), Status.FUTURE_PAYMENT);
     }
 }

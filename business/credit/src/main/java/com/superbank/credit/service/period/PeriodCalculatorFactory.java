@@ -14,10 +14,13 @@ public class PeriodCalculatorFactory {
     }
 
     public PeriodCalculator calculator(final PeriodType periodType) {
-        switch(periodType) {
-            case DAILY: return dailyCalculator;
-            case MONTHLY: return monthlyCalculator;
-            default: throw new UnsupportedOperationException("Period type is not supported");
+        switch (periodType) {
+            case DAILY:
+                return dailyCalculator;
+            case MONTHLY:
+                return monthlyCalculator;
+            default:
+                throw new UnsupportedOperationException("Period type is not supported");
         }
     }
 }

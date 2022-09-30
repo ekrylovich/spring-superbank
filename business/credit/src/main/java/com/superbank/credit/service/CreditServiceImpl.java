@@ -9,7 +9,6 @@ import com.superbank.credit.repository.CreditRepository;
 import com.superbank.credit.service.period.PeriodCalculatorFactory;
 import com.superbank.technical.exception.AlreadyPayedException;
 import com.superbank.technical.exception.EntityNotFoundException;
-
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -17,19 +16,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CreditServiceImpl implements CreditService{
+public class CreditServiceImpl implements CreditService {
     public static final String CREDIT_NOT_FOUND = "Credit not found";
     private final PeriodCalculatorFactory periodCalculatorFactory;
     private final CreditRepository creditRepository;
 
-    public CreditServiceImpl(final PeriodCalculatorFactory periodCalculatorFactory, final CreditRepository creditRepository) {
+    public CreditServiceImpl(final PeriodCalculatorFactory periodCalculatorFactory,
+                             final CreditRepository creditRepository) {
         this.periodCalculatorFactory = periodCalculatorFactory;
         this.creditRepository = creditRepository;
     }
 
 
     @Override
-    public void addCredit(CreditDto creditDto) {
+    public void addCredit(final CreditDto creditDto) {
         final List<PaymentPeriod> periods = periodCalculatorFactory
                 .calculator(creditDto.periodType)
                 .calculate(creditDto);
@@ -38,10 +38,10 @@ public class CreditServiceImpl implements CreditService{
     }
 
     @Override
-    public List<UserCreditDto> creditByUserId(Long userId) {
+    public List<UserCreditDto> creditByUserId(final Long userId) {
         return creditRepository.findByUserId(userId).stream()
-                               .map(this::mapCreditDto)
-                               .collect(Collectors.toList());
+                .map(this::mapCreditDto)
+                .collect(Collectors.toList());
     }
 
     @Override

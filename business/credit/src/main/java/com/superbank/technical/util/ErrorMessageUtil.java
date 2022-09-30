@@ -5,8 +5,12 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 import java.util.Locale;
 
-public class ErrorMessageUtil {
+public final class ErrorMessageUtil {
     private static final MessageSourceAccessor ACCESSOR;
+
+    private ErrorMessageUtil(){
+        throw new UnsupportedOperationException("Class " + ErrorMessageUtil.class + " cannot be initialized by constructor");
+    }
 
     static {
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();

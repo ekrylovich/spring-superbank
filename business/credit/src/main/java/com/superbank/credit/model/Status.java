@@ -1,7 +1,7 @@
 package com.superbank.credit.model;
 
 public enum Status {
-    PAYED{
+    PAYED {
         @Override
         public boolean payed() {
             return true;

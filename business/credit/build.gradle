@@ -3,6 +3,9 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'org.liquibase.gradle' version '2.0.4'
     id 'java'
+    id 'pmd'
+    id 'com.github.spotbugs' version '5.0.10'
+    id 'checkstyle'
 }
 
 group 'org.superbank'
@@ -20,11 +23,47 @@ dependencies {
 
     implementation 'org.liquibase:liquibase-core'
 
+    compileOnly 'com.google.code.findbugs:annotations:3.0.1'
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.1'
+
     runtimeOnly 'org.postgresql:postgresql'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-test {
-    useJUnitPlatform()
+pmd {
+    toolVersion '6.13.0'
+    ruleSets = ["config/pmd/ruleset.xml"]
+}
+
+pmdTest {
+    enabled = false
+}
+
+
+checkstyle {
+//    toolVersion '8.19'
+}
+
+spotbugs {
+
+}
+
+spotbugsMain {
+    excludeFilter.set(file("$rootProject.projectDir/config/spotBugs/excludeFilter.xml"))
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+spotbugsTest {
+    enabled = false
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
 }

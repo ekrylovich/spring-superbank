@@ -4,19 +4,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import java.time.LocalDate;
 
 @Entity
 public class PaymentPeriod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long      id;
-    private Double    summa;
+    private Long id;
+    private Double summa;
     private LocalDate startDate;
     private LocalDate endDate;
     private Status status;
 
-    public PaymentPeriod(Double summa, LocalDate startDate, LocalDate endDate, Status status) {
+    public PaymentPeriod(final Double summa,
+                         final LocalDate startDate,
+                         final LocalDate endDate,
+                         final Status status) {
         this.summa = summa;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -30,7 +34,7 @@ public class PaymentPeriod {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -38,7 +42,7 @@ public class PaymentPeriod {
         return summa;
     }
 
-    public void setSumma(Double summa) {
+    public void setSumma(final Double summa) {
         this.summa = summa;
     }
 
@@ -46,7 +50,7 @@ public class PaymentPeriod {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(final LocalDate startDate) {
         this.startDate = startDate;
     }
 
@@ -54,7 +58,7 @@ public class PaymentPeriod {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(final LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -62,20 +66,30 @@ public class PaymentPeriod {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(final Status status) {
         this.status = status;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
 
-        PaymentPeriod that = (PaymentPeriod) o;
+        final PaymentPeriod that = (PaymentPeriod) object;
 
-        if (!summa.equals(that.summa)) return false;
-        if (!startDate.equals(that.startDate)) return false;
-        if (!endDate.equals(that.endDate)) return false;
+        if (!summa.equals(that.summa)) {
+            return false;
+        }
+        if (!startDate.equals(that.startDate)) {
+            return false;
+        }
+        if (!endDate.equals(that.endDate)) {
+            return false;
+        }
         return status == that.status;
     }
 

@@ -1,28 +1,26 @@
 package com.superbank.credit.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+
 import java.util.List;
 
 @Entity
 public class Credit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long                id;
-    private String              title;
-    private String              description;
-    private Long                userId;
+    private Long id;
+    private String title;
+    private String description;
+    private Long userId;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "credit_id", nullable = false)
     private List<PaymentPeriod> paymentPeriods;
 
-    public Credit(String title, String description, Long userId, List<PaymentPeriod> paymentPeriods) {
+    public Credit(final String title,
+                  final String description,
+                  final Long userId,
+                  final List<PaymentPeriod> paymentPeriods) {
         this.title = title;
         this.description = description;
         this.userId = userId;
@@ -36,7 +34,7 @@ public class Credit {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -44,7 +42,7 @@ public class Credit {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
@@ -52,7 +50,7 @@ public class Credit {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -60,7 +58,7 @@ public class Credit {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(final Long userId) {
         this.userId = userId;
     }
 
@@ -68,20 +66,30 @@ public class Credit {
         return paymentPeriods;
     }
 
-    public void setPaymentPeriods(List<PaymentPeriod> paymentPeriods) {
+    public void setPaymentPeriods(final List<PaymentPeriod> paymentPeriods) {
         this.paymentPeriods = paymentPeriods;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
 
-        Credit credit = (Credit) o;
+        final Credit credit = (Credit) object;
 
-        if (!title.equals(credit.title)) return false;
-        if (!description.equals(credit.description)) return false;
-        if (!userId.equals(credit.userId)) return false;
+        if (!title.equals(credit.title)) {
+            return false;
+        }
+        if (!description.equals(credit.description)) {
+            return false;
+        }
+        if (!userId.equals(credit.userId)) {
+            return false;
+        }
         return paymentPeriods.equals(credit.paymentPeriods);
     }
 

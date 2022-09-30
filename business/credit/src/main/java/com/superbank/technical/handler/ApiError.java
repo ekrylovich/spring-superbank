@@ -10,7 +10,10 @@ public class ApiError {
     public final String message;
     public final String debugMessage;
 
-    public ApiError(HttpStatus status, ZonedDateTime dateTime, String message, String debugMessage) {
+    public ApiError(final HttpStatus status,
+                    final ZonedDateTime dateTime,
+                    final String message,
+                    final String debugMessage) {
         this.status = status;
         this.dateTime = dateTime;
         this.message = message;

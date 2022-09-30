@@ -1,16 +1,11 @@
 package com.superbank.credit.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.superbank.credit.service.period.PeriodType;
 import com.superbank.credit.service.period.RateType;
 
 import javax.validation.Valid;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+
 import java.time.LocalDate;
 
 public class CreditDto {

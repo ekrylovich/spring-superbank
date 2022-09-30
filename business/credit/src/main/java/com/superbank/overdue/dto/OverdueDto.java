@@ -7,7 +7,7 @@ public class OverdueDto {
     public final LocalDate overdueDate;
     public final Long userId;
 
-    public OverdueDto(Double remainingSum, LocalDate overdueDate, Long userId) {
+    public OverdueDto(final Double remainingSum, final LocalDate overdueDate, final Long userId) {
         this.remainingSum = remainingSum;
         this.overdueDate = overdueDate;
         this.userId = userId;

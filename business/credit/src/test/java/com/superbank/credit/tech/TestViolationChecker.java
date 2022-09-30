@@ -1,10 +1,11 @@
 package com.superbank.credit.tech;
 
+import javax.validation.ConstraintViolation;
+
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-
-import javax.validation.ConstraintViolation;
-import java.util.Set;
 
 public class TestViolationChecker {
 
