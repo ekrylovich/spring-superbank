@@ -7,10 +7,13 @@ import com.superbank.credit.model.PaymentPeriod;
 import com.superbank.credit.model.Status;
 import com.superbank.credit.repository.CreditRepository;
 import com.superbank.credit.service.period.PeriodCalculatorFactory;
+import com.superbank.overdue.dto.OverdueDto;
+import com.superbank.overdue.model.OverdueProjection;
 import com.superbank.technical.exception.AlreadyPayedException;
 import com.superbank.technical.exception.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,6 +57,18 @@ public class CreditServiceImpl implements CreditService {
                 .orElseThrow(AlreadyPayedException::new);
         nextPaymentPeriod.setStatus(Status.PAYED);
         creditRepository.save(credit);
+    }
+
+    @Override
+    public List<OverdueDto> checkOverdue() {
+        return creditRepository.findOverdueHql(LocalDate.now())
+                .stream()
+                .map(this::mapOverdue)
+                .collect(Collectors.toList());
+    }
+
+    private OverdueDto mapOverdue(final OverdueProjection overdueProjection) {
+        return new OverdueDto(overdueProjection.getRemainingSum(), overdueProjection.getOverdueDate(), overdueProjection.getUserId());
     }
 
     private UserCreditDto mapCreditDto(final Credit credit) {
