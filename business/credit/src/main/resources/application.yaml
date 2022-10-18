@@ -1,4 +1,9 @@
+server:
+  port: 0
+
 spring:
+  application:
+    name: credit-service
   profiles:
     active: dev
 
@@ -16,12 +21,21 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
 topics:
   overdue:
     name: t.credit.overdue
 
-server:
-  port: 8888
 
 ---
 spring:

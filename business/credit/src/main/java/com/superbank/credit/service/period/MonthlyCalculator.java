@@ -3,7 +3,7 @@ package com.superbank.credit.service.period;
 import com.superbank.credit.dto.CreditDto;
 import com.superbank.credit.model.PaymentPeriod;
 import com.superbank.credit.model.Status;
-import com.superbank.rates.model.CreditRates;
+import com.superbank.rates.model.CreditRateProvider;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,10 +17,10 @@ import java.util.stream.LongStream;
 @Service
 public class MonthlyCalculator implements PeriodCalculator {
 
-    private final CreditRates creditRates;
+    private final CreditRateProvider creditRateProvider;
 
-    public MonthlyCalculator(final CreditRates creditRates) {
-        this.creditRates = creditRates;
+    public MonthlyCalculator(final CreditRateProvider creditRateProvider) {
+        this.creditRateProvider = creditRateProvider;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class MonthlyCalculator implements PeriodCalculator {
                 creditDto.duration.months,
                 creditDto.duration.days));
         final long months = ChronoUnit.MONTHS.between(creditDto.startDate, endDate);
-        final List<Double> sumPerMonth = creditDto.rateType.calculateAmount(months, creditDto.sum, creditRates);
+        final List<Double> sumPerMonth = creditDto.rateType.calculateAmount(months, creditDto.sum, creditRateProvider.rates());
         return LongStream.range(0, months)
                 .mapToObj(createPaymentPeriods(creditDto, sumPerMonth))
                 .collect(Collectors.toList());
