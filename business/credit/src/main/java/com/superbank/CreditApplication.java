@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableFeignClients
-@EnableScheduling
+//@EnableScheduling
 public class CreditApplication {
 
     public static void main(final String[] args) {

@@ -1,0 +1,56 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: gateway-service
+
+  cloud:
+    gateway:
+      routes:
+        - id: rate-service
+          uri: lb://rate-service
+          predicates:
+            - Path=/rate-service/api/v1/rate/**
+          filters:
+            - StripPrefix=1
+      default-filters:
+        - TokenRelay
+
+  security:
+    oauth2:
+      client:
+        provider:
+          my-keycloak-provider:
+            issuer-uri: http://localhost:8080/realms/superbank-realm
+        registration:
+          keycloak-spring-gateway-client:
+            provider: my-keycloak-provider
+            client-id: spring-gateway-client
+            client-secret: f6RWPc5saMQFmXKfMVNwcrhsDbILgIaX
+            authorization-grant-type: authorization_code
+            redirect-uri: '{baseUrl}/login/oauth2/code/keycloak'
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+
+---
+spring:
+  profiles:
+    active: docker
+
+  security:
+    oauth2:
+      client:
+        provider:
+          my-keycloak-provider:
+            issuer-uri: http://keycloak:8080/realms/superbank-realm
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery:8761/eureka

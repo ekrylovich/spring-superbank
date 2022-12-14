@@ -1,8 +1,7 @@
 package org.superbank.rate.controller;
 
-import static org.superbank.RateApplication.API_VERSION;
+import static org.superbank.rate.RateApplication.API_VERSION;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

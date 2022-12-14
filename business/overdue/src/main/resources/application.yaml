@@ -12,3 +12,11 @@ spring:
 
 topic:
   name: t.credit.overdue
+
+
+---
+spring:
+  profiles:
+    active: docker
+  kafka:
+    bootstrap-servers: kafka:9092

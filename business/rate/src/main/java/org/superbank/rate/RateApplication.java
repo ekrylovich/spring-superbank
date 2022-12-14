@@ -1,4 +1,4 @@
-package org.superbank;
+package org.superbank.rate;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

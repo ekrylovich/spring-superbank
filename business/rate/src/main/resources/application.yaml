@@ -3,4 +3,33 @@ spring:
     name: rate-service
 
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:http://localhost:8888/
+
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/superbank-realm/protocol/openid-connect/certs
+
+
+---
+spring:
+  profiles:
+    active: docker
+  config:
+    import: optional:configserver:http://config:8888/
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://keycloak:8080/realms/superbank-realm/protocol/openid-connect/certs
+
+server:
+  port:8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery:8761/eureka
+

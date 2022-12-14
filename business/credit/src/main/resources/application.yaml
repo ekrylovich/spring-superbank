@@ -1,61 +1,30 @@
-server:
-  port: 0
-
 spring:
   application:
     name: credit-service
+
+  config:
+    import: optional:configserver:http://localhost:8888/
+
+---
+spring:
   profiles:
-    active: dev
-
+    active: docker
+  config:
+    import: optional:configserver:http://config:8888/
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://keycloak:8080/realms/superbank-realm/protocol/openid-connect/certs
   datasource:
-    username: pguser
-    password: pass9
-    driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/credit_db
-
-  liquibase:
-    change-log: classpath:db/migrations.yaml
-
+    url: jdbc:postgresql://postgres:5432/credit_db
   kafka:
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    bootstrap-servers: kafka:9092
+
+server:
+  port:8080
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-
-topics:
-  overdue:
-    name: t.credit.overdue
-
-
----
-spring:
-  config:
-    activate:
-      on-profile: dev
-  jpa:
-    show-sql: true
-
-credit:
-  rate:
-    fixed: 0.05
-    floating: 0.02
-
-
-
----
-spring:
-  config:
-    activate:
-      on-profile: prod
-credit:
-  rateProvider: http://localhost:8889/api/v1/rate
+      defaultZone: http://discovery:8761/eureka
